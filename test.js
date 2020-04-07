@@ -11,11 +11,9 @@ const currentEmail = execSync("git config user.email", {
 
 const str = execSync("git log", { encoding: "utf8" });
 
-const reg = /Author:\s?(\w+)\s?<([^>]+)>/g;
+const account = [];
 
-let account = [];
-
-str.replace(reg, (str, name, email) => {
+str.replace(/Author:\s?(\w+)\s?<([^>]+)>/g, (str, name, email) => {
   // side effect
 
   // 去重
@@ -28,25 +26,15 @@ str.replace(reg, (str, name, email) => {
 });
 
 (async () => {
-  const { oldEmail } = await inquirer.prompt([
+  // 先判断是否有未提交的变更
+
+  const { oldEmail, name, email } = await inquirer.prompt([
     {
       message: "请选择要替换的旧邮箱",
       type: "list",
       name: "oldEmail",
       choices: account.map(item => item.email)
-    }
-    // {
-    //   message: "是否替换为当前 git config?",
-    //   type: "list",
-    //   name: "ifReplace",
-    //   choices: [
-    //     { name: "y", value: true },
-    //     { name: "N(手动输入)", value: false }
-    //   ]
-    // }
-  ]);
-
-  const newUser = await inquirer.prompt([
+    },
     {
       message: "请输入新的用户名",
       type: "input",
@@ -54,7 +42,7 @@ str.replace(reg, (str, name, email) => {
       default: currentName,
       validate: value =>
         new Promise(resolve => {
-          setTimeout(() => resolve(!!value || "请输入有效的用户名"), 1000);
+          setTimeout(() => resolve(!!value || "请输入有效的用户名"), 100);
         })
     },
     {
@@ -65,15 +53,15 @@ str.replace(reg, (str, name, email) => {
       validate: value =>
         new Promise(resolve => {
           // TODO: 邮箱格式校验
-          setTimeout(() => resolve(!!value || "请输入有效的邮箱📮"), 1000);
+          setTimeout(() => resolve(!!value || "请输入有效的邮箱📮"), 100);
         })
     }
   ]);
 
   const command = `'
     OLD_EMAIL=${oldEmail}
-    CORRECT_NAME=${newUser.name}
-    CORRECT_EMAIL=${newUser.email}
+    CORRECT_NAME=${name}
+    CORRECT_EMAIL=${email}
     if test "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL"
     then
         export GIT_COMMITTER_NAME="$CORRECT_NAME"
@@ -87,6 +75,8 @@ str.replace(reg, (str, name, email) => {
     '`;
 
   try {
+    // TODO: 备份没有清空时会执行失败, 这时候需要提示用户进行清空
+    // git update-ref -d refs/original/refs/heads/master
     const msg = execSync(
       `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
       { stdio: "inherit", encoding: "utf8" }
