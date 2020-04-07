@@ -60,6 +60,11 @@ module.exports = async function() {
     }
   ]);
 
+  if (name === currentName && email === currentEmail) {
+    console.log("前后信息一致, 无变更");
+    return;
+  }
+
   const command = `'
       OLD_EMAIL=${oldEmail}
       CORRECT_NAME=${name}
