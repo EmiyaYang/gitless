@@ -34,10 +34,7 @@ module.exports = async function() {
 
   const currentBranch = getCurrentBranch();
 
-  console.log(
-    "警告:",
-    `该 cli 将会自动覆盖 refs/original/refs/heads/${currentBranch}`
-  );
+  console.log("警告:", `该 cli 将会自动覆盖 git 相关备份`);
 
   const { oldEmail, name, email } = await inquirer.prompt([
     {
@@ -92,7 +89,10 @@ module.exports = async function() {
 
   try {
     // 自动删除备份
-    execSync(`git update-ref -d refs/original/refs/heads/${currentBranch}`);
+    // execSync(`git update-ref -d refs/original/refs/heads/${currentBranch}`);
+    execSync(
+      'git for-each-ref --format="%(refname)" refs/original/ | xargs -n 1 git update-ref -d'
+    );
 
     const msg = execSync(
       `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
