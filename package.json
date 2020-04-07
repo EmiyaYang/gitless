@@ -18,5 +18,8 @@
   },
   "bin": {
     "gitless": "./src/run.js"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
