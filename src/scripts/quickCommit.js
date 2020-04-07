@@ -8,7 +8,10 @@ module.exports = async function(config = {}) {
     /(Changes not staged for commit)|(Changes to be committed)/
   );
 
-  if (!matched || !matched.length) return;
+  if (!matched || !matched.length) {
+    console.log("所有变更均已提交");
+    return;
+  }
 
   const { message } = await inquirer.prompt([
     {
