@@ -13,17 +13,19 @@ const str = execSync("git log", { encoding: "utf8" });
 
 const reg = /Author:\s?(\w+)\s?<([^>]+)>/g;
 
-const account = [];
+let account = [];
 
 str.replace(reg, (str, name, email) => {
   // side effect
+
+  // 去重
+  if (account.find(item => item.email === email)) return;
+
   account.push({
     name,
     email
   });
 });
-
-console.log(account);
 
 (async () => {
   const { oldEmail, ifReplace } = await inquirer.prompt([
@@ -45,5 +47,31 @@ console.log(account);
   ]);
 
   if (ifReplace) {
+    const command = `
+    OLD_EMAIL="yangjiaqi2@yy.com"
+    CORRECT_NAME="EmiyaYang"
+    CORRECT_EMAIL="1038810929@qq.com"
+    if test "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL"
+    then
+        export GIT_COMMITTER_NAME="$CORRECT_NAME"
+        export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
+    fi
+    if test "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL"
+    then
+        export GIT_AUTHOR_NAME="$CORRECT_NAME"
+        export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
+    fi
+    `;
+
+    try {
+      execSync(
+        `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
+        { stdio: "inherit" }
+      );
+    } catch (e) {
+      console.log("错误信息如下: \n");
+      console.log("--------------------------------");
+      console.warn(e);
+    }
   }
 })();
