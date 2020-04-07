@@ -10,6 +10,15 @@
     "name": "emiya",
     "email": "1038810929@qq.com"
   },
+  "keywords": [
+    "build",
+    "commit",
+    "distribution",
+    "git",
+    "npm",
+    "cli",
+    "version"
+  ],
   "license": "ISC",
   "devDependencies": {
     "commander": "^5.0.0",
