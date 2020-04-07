@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const { execSync } = require("child_process");
+const commitTask = require("./commit");
 
 const currentName = execSync("git config user.name", {
   encoding: "utf8"
@@ -27,6 +28,7 @@ str.replace(/Author:\s?(\w+)\s?<([^>]+)>/g, (str, name, email) => {
 
 (async () => {
   // 先判断是否有未提交的变更
+  await commitTask();
 
   const { oldEmail, name, email } = await inquirer.prompt([
     {
