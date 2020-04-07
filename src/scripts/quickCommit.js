@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const { execSync } = require("child_process");
 
-module.exports = async function() {
+module.exports = async function(config = {}) {
   const msg = execSync("git status", { encoding: "utf8" });
 
   const matched = msg.match(
@@ -15,7 +15,7 @@ module.exports = async function() {
       message: "请输入提交信息",
       type: "input",
       name: "message",
-      default: "test: some changes",
+      default: config.defaultMessage || "test: some changes",
       validate: value =>
         new Promise(resolve => {
           setTimeout(() => resolve(!!value || "请输入有效的提交信息"), 100);

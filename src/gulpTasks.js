@@ -1,6 +1,8 @@
 const gulp = require("gulp");
-const quickCommit = require("./script/quickCommit");
-const reconfig = require("./script/reconfig");
+const quickCommit = require("./scripts/quickCommit");
+const reconfig = require("./scripts/reconfig");
+const publish = require("./scripts/publish");
 
 gulp.task("commit", quickCommit);
 gulp.task("reconfig", reconfig);
+gulp.task("publish", publish);
