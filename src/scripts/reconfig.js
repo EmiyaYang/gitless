@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const { execSync } = require("child_process");
 const commitTask = require("./quickCommit");
+const updateConfigUser = require("./updateConfigUser");
 
 module.exports = async function() {
   const currentName = execSync("git config user.name", {
@@ -93,4 +94,7 @@ module.exports = async function() {
     console.log("--------------------------------");
     console.warn(e);
   }
+
+  // 询问是否更新 config.user
+  await updateConfigUser({ newName: name, newEmail: email });
 };
