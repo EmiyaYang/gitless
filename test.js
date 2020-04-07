@@ -88,7 +88,7 @@ str.replace(reg, (str, name, email) => {
 
   try {
     const msg = execSync(
-      `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
+      `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags -f`,
       { stdio: "inherit", encoding: "utf8" }
     );
   } catch (e) {
