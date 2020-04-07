@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "EmiyaYang",
+  "author": {
+    "name": "emiya",
+    "email": "1038810929@qq.com"
+  },
   "license": "ISC",
   "devDependencies": {
     "commander": "^5.0.0",
