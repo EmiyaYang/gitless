@@ -97,12 +97,12 @@ module.exports = async function() {
       `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
       { stdio: "inherit", encoding: "utf8" }
     );
+
+    // 询问是否更新 config.user
+    await updateConfigUser({ newName: name, newEmail: email });
   } catch (e) {
     console.log("错误信息如下: \n");
     console.log("--------------------------------");
     console.warn(e);
   }
-
-  // 询问是否更新 config.user
-  await updateConfigUser({ newName: name, newEmail: email });
 };
