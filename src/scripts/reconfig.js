@@ -91,6 +91,7 @@ module.exports = async function() {
       '`;
 
   try {
+    // 自动删除备份
     execSync(`git update-ref -d refs/original/refs/heads/${currentBranch}`);
 
     const msg = execSync(
