@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const { execSync } = require("child_process");
 
 module.exports = async function({ newName, newEmail }) {
   const currentName = execSync("git config user.name", {
