@@ -16,4 +16,7 @@ gitless commit
 
 # 快速重新配置分支
 gitless reconfig
+
+# 快速发布
+gitless publish
 ```
