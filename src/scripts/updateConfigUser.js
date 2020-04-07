@@ -20,6 +20,7 @@ module.exports = async function({ newName, newEmail }) {
     {
       message: "是否替换为 git config user?",
       type: "list",
+      name: "ifReplace",
       default: false,
       choices: [
         { name: "y", value: true },
