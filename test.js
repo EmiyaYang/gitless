@@ -54,7 +54,7 @@ str.replace(reg, (str, name, email) => {
       default: currentName,
       validate: value =>
         new Promise(resolve => {
-          setTimeout(() => resolve(value || "用户"), 3000);
+          setTimeout(() => resolve(!!value || "请输入有效的用户名"), 1000);
         })
     },
     {
@@ -65,7 +65,7 @@ str.replace(reg, (str, name, email) => {
       validate: value =>
         new Promise(resolve => {
           // TODO: 邮箱格式校验
-          setTimeout(() => resolve(value || "You must provide a number"), 3000);
+          setTimeout(() => resolve(!!value || "请输入有效的邮箱📮"), 1000);
         })
     }
   ]);
