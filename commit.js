@@ -5,6 +5,7 @@ const msg = execSync("git status", { encoding: "utf8" });
 
 msg.match(/(Changes not staged for commit)|(Changes to be committed)/);
 
+console.log(msg);
 if (msg && msg.length) {
   console.log("请先提交!");
 } else {
