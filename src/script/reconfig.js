@@ -1,32 +1,32 @@
 const inquirer = require("inquirer");
 const { execSync } = require("child_process");
-const commitTask = require("../utils/commit");
+const commitTask = require("./quickCommit");
 
-const currentName = execSync("git config user.name", {
-  encoding: "utf8"
-}).trim();
+module.exports = async function() {
+  const currentName = execSync("git config user.name", {
+    encoding: "utf8"
+  }).trim();
 
-const currentEmail = execSync("git config user.email", {
-  encoding: "utf8"
-}).trim();
+  const currentEmail = execSync("git config user.email", {
+    encoding: "utf8"
+  }).trim();
 
-const str = execSync("git log", { encoding: "utf8" });
+  const str = execSync("git log", { encoding: "utf8" });
 
-const account = [];
+  const account = [];
 
-str.replace(/Author:\s?(\w+)\s?<([^>]+)>/g, (str, name, email) => {
-  // side effect
+  str.replace(/Author:\s?(\w+)\s?<([^>]+)>/g, (str, name, email) => {
+    // side effect
 
-  // 去重
-  if (account.find(item => item.email === email)) return;
+    // 去重
+    if (account.find(item => item.email === email)) return;
 
-  account.push({
-    name,
-    email
+    account.push({
+      name,
+      email
+    });
   });
-});
 
-(async () => {
   // 先判断是否有未提交的变更
   await commitTask();
 
@@ -61,20 +61,20 @@ str.replace(/Author:\s?(\w+)\s?<([^>]+)>/g, (str, name, email) => {
   ]);
 
   const command = `'
-    OLD_EMAIL=${oldEmail}
-    CORRECT_NAME=${name}
-    CORRECT_EMAIL=${email}
-    if test "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL"
-    then
-        export GIT_COMMITTER_NAME="$CORRECT_NAME"
-        export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
-    fi
-    if test "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL"
-    then
-        export GIT_AUTHOR_NAME="$CORRECT_NAME"
-        export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
-    fi
-    '`;
+      OLD_EMAIL=${oldEmail}
+      CORRECT_NAME=${name}
+      CORRECT_EMAIL=${email}
+      if test "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL"
+      then
+          export GIT_COMMITTER_NAME="$CORRECT_NAME"
+          export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
+      fi
+      if test "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL"
+      then
+          export GIT_AUTHOR_NAME="$CORRECT_NAME"
+          export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
+      fi
+      '`;
 
   try {
     // TODO: 备份没有清空时会执行失败, 这时候需要提示用户进行清空
@@ -88,4 +88,4 @@ str.replace(/Author:\s?(\w+)\s?<([^>]+)>/g, (str, name, email) => {
     console.log("--------------------------------");
     console.warn(e);
   }
-})();
+};

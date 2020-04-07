@@ -2,8 +2,12 @@ const gulp = require("gulp");
 const program = require("commander");
 require("./gulpTasks");
 
+program.name("run").usage("[task name]");
+
 program.parse(process.argv);
 const task = program.args[0];
+
+// program.option("-c, --commit", "quick commit");
 
 if (!task) {
   program.help();
