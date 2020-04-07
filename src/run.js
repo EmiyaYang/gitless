@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const gulp = require("gulp");
 const program = require("commander");
 require("./gulpTasks");

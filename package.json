@@ -1,16 +1,19 @@
 {
-  "name": "cli",
+  "name": "@emiya/gitless",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "run.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "EmiyaYang",
   "license": "ISC",
   "dependencies": {
     "commander": "^5.0.0",
     "gulp": "^4.0.2",
     "inquirer": "^7.1.0"
+  },
+  "bin": {
+    "gitless": "./src/run.js"
   }
 }
