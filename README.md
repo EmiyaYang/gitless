@@ -5,7 +5,7 @@
 ## Install
 
 ```bash
-gitless commit
+yarn add -D gitless
 ```
 
 ## Usage
