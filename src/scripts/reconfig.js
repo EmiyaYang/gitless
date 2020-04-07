@@ -2,6 +2,7 @@ const inquirer = require("inquirer");
 const { execSync } = require("child_process");
 const commitTask = require("./quickCommit");
 const updateConfigUser = require("./updateConfigUser");
+const getCurrentBranch = require("./getCurrentBranch");
 
 module.exports = async function() {
   const currentName = execSync("git config user.name", {
@@ -30,6 +31,13 @@ module.exports = async function() {
 
   // 先判断是否有未提交的变更
   await commitTask();
+
+  const currentBranch = getCurrentBranch();
+
+  console.log(
+    "警告:",
+    `该 cli 将会自动覆盖 refs/original/refs/heads/${currentBranch}`
+  );
 
   const { oldEmail, name, email } = await inquirer.prompt([
     {
@@ -83,8 +91,8 @@ module.exports = async function() {
       '`;
 
   try {
-    // TODO: 备份没有清空时会执行失败, 这时候需要提示用户进行清空
-    // git update-ref -d refs/original/refs/heads/master
+    execSync(`git update-ref -d refs/original/refs/heads/${currentBranch}`);
+
     const msg = execSync(
       `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
       { stdio: "inherit", encoding: "utf8" }
