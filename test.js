@@ -47,7 +47,7 @@ str.replace(reg, (str, name, email) => {
   ]);
 
   if (ifReplace) {
-    const command = `
+    const command = `'
     OLD_EMAIL="yangjiaqi2@yy.com"
     CORRECT_NAME="EmiyaYang"
     CORRECT_EMAIL="1038810929@qq.com"
@@ -61,12 +61,12 @@ str.replace(reg, (str, name, email) => {
         export GIT_AUTHOR_NAME="$CORRECT_NAME"
         export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
     fi
-    `;
+    '`;
 
     try {
-      execSync(
+      const msg = execSync(
         `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
-        { stdio: "inherit" }
+        { stdio: "inherit", encoding: "utf8" }
       );
     } catch (e) {
       console.log("错误信息如下: \n");
