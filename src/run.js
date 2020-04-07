@@ -1,5 +1,6 @@
 const gulp = require("gulp");
 const program = require("commander");
+require("./gulpTasks");
 
 program.parse(process.argv);
 const task = program.args[0];
