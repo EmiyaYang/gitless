@@ -5,7 +5,7 @@
 ## Install
 
 ```bash
-yarn add -D gitless
+yarn add -D @emiya/gitless
 ```
 
 ## Usage
