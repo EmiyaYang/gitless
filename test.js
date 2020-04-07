@@ -28,29 +28,52 @@ str.replace(reg, (str, name, email) => {
 });
 
 (async () => {
-  const { oldEmail, ifReplace } = await inquirer.prompt([
+  const { oldEmail } = await inquirer.prompt([
     {
       message: "请选择要替换的旧邮箱",
       type: "list",
       name: "oldEmail",
       choices: account.map(item => item.email)
+    }
+    // {
+    //   message: "是否替换为当前 git config?",
+    //   type: "list",
+    //   name: "ifReplace",
+    //   choices: [
+    //     { name: "y", value: true },
+    //     { name: "N(手动输入)", value: false }
+    //   ]
+    // }
+  ]);
+
+  const newUser = await inquirer.prompt([
+    {
+      message: "请输入新的用户名",
+      type: "input",
+      name: "name",
+      default: currentName,
+      validate: value =>
+        new Promise(resolve => {
+          setTimeout(() => resolve(value || "用户"), 3000);
+        })
     },
     {
-      message: "是否替换为当前 git config?",
-      type: "list",
-      name: "ifReplace",
-      choices: [
-        { name: "y", value: true },
-        { name: "N(手动输入)", value: false }
-      ]
+      message: "请输入新的邮箱",
+      type: "input",
+      name: "email",
+      default: currentEmail,
+      validate: value =>
+        new Promise(resolve => {
+          // TODO: 邮箱格式校验
+          setTimeout(() => resolve(value || "You must provide a number"), 3000);
+        })
     }
   ]);
 
-  if (ifReplace) {
-    const command = `'
-    OLD_EMAIL="yangjiaqi2@yy.com"
-    CORRECT_NAME="EmiyaYang"
-    CORRECT_EMAIL="1038810929@qq.com"
+  const command = `'
+    OLD_EMAIL=${oldEmail}
+    CORRECT_NAME=${newUser.name}
+    CORRECT_EMAIL=${newUser.email}
     if test "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL"
     then
         export GIT_COMMITTER_NAME="$CORRECT_NAME"
@@ -63,15 +86,14 @@ str.replace(reg, (str, name, email) => {
     fi
     '`;
 
-    try {
-      const msg = execSync(
-        `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
-        { stdio: "inherit", encoding: "utf8" }
-      );
-    } catch (e) {
-      console.log("错误信息如下: \n");
-      console.log("--------------------------------");
-      console.warn(e);
-    }
+  try {
+    const msg = execSync(
+      `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
+      { stdio: "inherit", encoding: "utf8" }
+    );
+  } catch (e) {
+    console.log("错误信息如下: \n");
+    console.log("--------------------------------");
+    console.warn(e);
   }
 })();
