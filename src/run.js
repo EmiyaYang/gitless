@@ -7,7 +7,8 @@ require("./gulpTasks");
 program.name("run").usage(`[task name]
 Available tasks: 
   1. commit: 快速提交
-  2. reconfig: 重命名指定分支`);
+  2. reconfig: 重命名指定分支
+  3. publish: 包发布`);
 
 program.parse(process.argv);
 const task = program.args[0];

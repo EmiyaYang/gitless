@@ -20,7 +20,7 @@
     "version"
   ],
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "commander": "^5.0.0",
     "gulp": "^4.0.2",
     "inquirer": "^7.1.0"
