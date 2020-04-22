@@ -26,7 +26,8 @@
     "inquirer": "^7.1.0"
   },
   "bin": {
-    "gitless": "./src/run.js"
+    "gitless": "./src/run.js",
+    "gls": "./src/run.js"
   },
   "publishConfig": {
     "access": "public"

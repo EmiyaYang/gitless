@@ -5,18 +5,18 @@
 ## Install
 
 ```bash
-yarn add -D @emiya/gitless
+npm install -g @emiya/gitless
 ```
 
 ## Usage
 
 ```bash
 # 快速提交
-gitless commit
+gls commit
 
 # 快速重新配置分支
-gitless reconfig
+gls reconfig
 
 # 快速发布
-gitless publish
+gls publish
 ```
