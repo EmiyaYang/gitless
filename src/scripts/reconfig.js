@@ -3,36 +3,23 @@ const { execSync } = require("child_process");
 const commitTask = require("./quickCommit");
 const updateConfigUser = require("./updateConfigUser");
 const getCurrentBranch = require("./getCurrentBranch");
+const getCommitterList = require("./getCommitterList");
 
-module.exports = async function() {
+module.exports = async function () {
   const currentName = execSync("git config user.name", {
-    encoding: "utf8"
+    encoding: "utf8",
   }).trim();
 
   const currentEmail = execSync("git config user.email", {
-    encoding: "utf8"
+    encoding: "utf8",
   }).trim();
 
-  const str = execSync("git log", { encoding: "utf8" });
-
-  const account = [];
-
-  str.replace(/Author:\s?(\w+)\s?<([^>]+)>/g, (str, name, email) => {
-    // side effect
-
-    // 去重
-    if (account.find(item => item.email === email)) return;
-
-    account.push({
-      name,
-      email
-    });
-  });
+  const account = getCommitterList();
 
   // 先判断是否有未提交的变更
   await commitTask();
 
-  const currentBranch = getCurrentBranch();
+  getCurrentBranch();
 
   console.log("警告:", `该 cli 将会自动覆盖 git 相关备份`);
 
@@ -41,35 +28,30 @@ module.exports = async function() {
       message: "请选择要替换的旧邮箱",
       type: "list",
       name: "oldEmail",
-      choices: account.map(item => item.email)
+      choices: account.map((item) => item.email),
     },
     {
       message: "请输入新的用户名",
       type: "input",
       name: "name",
       default: currentName,
-      validate: value =>
-        new Promise(resolve => {
+      validate: (value) =>
+        new Promise((resolve) => {
           setTimeout(() => resolve(!!value || "请输入有效的用户名"), 100);
-        })
+        }),
     },
     {
       message: "请输入新的邮箱",
       type: "input",
       name: "email",
       default: currentEmail,
-      validate: value =>
-        new Promise(resolve => {
+      validate: (value) =>
+        new Promise((resolve) => {
           // TODO: 邮箱格式校验
           setTimeout(() => resolve(!!value || "请输入有效的邮箱"), 100);
-        })
-    }
+        }),
+    },
   ]);
-
-  // if (name === currentName && email === currentEmail) {
-  //   console.log("前后信息一致, 无变更");
-  //   return;
-  // }
 
   const command = `'
       OLD_EMAIL=${oldEmail}
@@ -94,7 +76,7 @@ module.exports = async function() {
       'git for-each-ref --format="%(refname)" refs/original/ | xargs -n 1 git update-ref -d'
     );
 
-    const msg = execSync(
+    execSync(
       `git filter-branch --env-filter ${command} --tag-name-filter cat -- --branches --tags`,
       { stdio: "inherit", encoding: "utf8" }
     );
