@@ -4,7 +4,8 @@
   "description": "",
   "main": "run.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./inbox.js",
+    "dev": "node ./src/run.js"
   },
   "author": {
     "name": "emiya",
@@ -22,7 +23,6 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^5.0.0",
-    "gulp": "^4.0.2",
     "inquirer": "^7.1.0"
   },
   "bin": {

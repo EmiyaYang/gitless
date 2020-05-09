@@ -15,7 +15,10 @@ npm install -g @emiya/gitless
 gls commit
 
 # 快速重新配置分支
-gls reconfig
+gls rename
+
+# 获取提交者列表
+gls clist
 
 # 快速发布
 gls publish
