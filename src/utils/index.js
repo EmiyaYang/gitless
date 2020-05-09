@@ -1,6 +1,6 @@
 const { execSync } = require("child_process");
 
-module.exports = function () {
+function getCommitterList() {
   const account = [];
 
   const str = execSync("git log", { encoding: "utf8" });
@@ -19,4 +19,8 @@ module.exports = function () {
   });
 
   return account;
+}
+
+module.exports = {
+  getCommitterList,
 };

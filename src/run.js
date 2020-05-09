@@ -7,14 +7,15 @@ require("./gulpTasks");
 program.name("run").usage(`[task name]
 Available tasks: 
   1. commit: 快速提交
-  2. reconfig: 重命名指定分支
-  3. publish: 包发布`);
+  2. rename: 重命名指定分支
+  3. publish: 包发布
+  4. clist 获取提交者列表`);
 
 program.parse(process.argv);
 const task = program.args[0];
 
 if (!task) {
-  program.help(str => str);
+  program.help((str) => str);
 } else {
   console.log("Emiya run:", task);
 

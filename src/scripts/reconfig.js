@@ -3,7 +3,7 @@ const { execSync } = require("child_process");
 const commitTask = require("./quickCommit");
 const updateConfigUser = require("./updateConfigUser");
 const getCurrentBranch = require("./getCurrentBranch");
-const getCommitterList = require("./getCommitterList");
+const { getCommitterList } = require("../utils");
 
 module.exports = async function () {
   const currentName = execSync("git config user.name", {
