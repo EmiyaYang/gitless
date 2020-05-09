@@ -22,6 +22,6 @@ program
 // <>: required, []: optional
 program.command("rename").description("批量重命名分支").action(reconfig);
 
-program.command("publish").description("快速发布").action(publish);
+program.command("publish").alias("pub").description("快速发布").action(publish);
 
 program.parse(program.argv);

@@ -1,5 +1,3 @@
-封装了一下常用的 git cli 操作, 如分支重命名, 快速提交等.
-
 # GitLess
 
 ## Install
@@ -13,13 +11,16 @@ npm install -g @emiya/gitless
 ```bash
 # 快速提交
 gls commit
+gls c
 
-# 快速重新配置分支
+# 批量重命名 commit
 gls rename
 
 # 获取提交者列表
 gls clist
+gls cl
 
 # 快速发布
 gls publish
+gls pub
 ```

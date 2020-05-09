@@ -1,7 +1,7 @@
 {
   "name": "@emiya/gitless",
   "version": "0.0.12",
-  "description": "",
+  "description": "封装了一下常用的 git cli 操作, 如批量分支重命名, 快速提交等",
   "main": "run.js",
   "scripts": {
     "test": "node ./inbox.js",
